@@ -32,7 +32,18 @@ X_2 = eye(length(x_0));
 %% Problem 1
 Q = diag([1,50,0.01,1]);
 R=eye(2);
-foo=p1fun(C_1,X_1);
+% p1
+ans111=p1fun(C_1,X_1);
+plotProb1(ans111);
+ans112=p1fun(C_1,X_2);
+plotProb1(ans111)
+% 
+%%
+ans121=p1fun(C_2,X_1);
+plotProb1(ans121)
+%%
+ans122=p1fun(C_2,X_2);
+plotProb1(ans122)
 % ans111 = prob1(C_1,X_1);
 % ans112 = prob1(C_1,X_2);
 % 

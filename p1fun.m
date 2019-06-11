@@ -38,9 +38,9 @@ while (true)
 	
 	JPre =J;
 	
-	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.') -FPre;
-	
-	for alpha = 1:-0.005:0
+	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.') -FPre
+	alpha = 1;
+	while(true)
 		F = FPre + alpha*delF;
 		AcTemp = A - B*F*C;
 		[~,eigVal] = eig(AcTemp,'vector');
@@ -53,10 +53,18 @@ while (true)
 				break
 			end
 		end
+		alpha = alpha/2;
+		if alpha<1E-7
+			error("failed")
+		end
+	end
+	if alpha==0
+		disp("failed")
 	end
 	indexList(itNum) = J;
 	normList(itNum) = norm(F);
 	if JPre - J< 1E-7
+		J,F
 		output.F = F;
 		output.indexList = indexList(1:itNum);
 		output.itNum = itNum;
