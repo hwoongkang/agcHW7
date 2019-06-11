@@ -1,6 +1,6 @@
 function output = p1fun(C,X)
 global A B
-Q = diag([1,50,0.01,1]);
+Q = diag([1,50,.01,1]);
 R = eye(2);
 
 %% ARE solution
@@ -9,6 +9,8 @@ if max(real(eigVal))>0
 	error("ARE failed");
 end
 F = K*pinv(C);
+output.F0 = K;
+
 Ac = A-B*F*C;
 
 %% iteration settings
@@ -39,33 +41,38 @@ while (true)
 	
 	JPre =J;
 	
-	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.') -FPre;
+	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.');
+	delF = delF-FPre;
+% 	delF = R*F*C*S*C.' - B.'*V*S*C.';
+	
 	alpha = 1;
 	while(true)
 		F = FPre + alpha*delF;
-		AcTemp = A - B*F*C;
-		[~,eigVal] = eig(AcTemp,'vector');
+		Ac = A - B*F*C;
+		[~,eigVal] = eig(Ac,'vector');
 		if max(real(eigVal))<0
-			S = getS(AcTemp);
-			V = getV(AcTemp,F);
+			S = getS(Ac);
+			V = getV(Ac,F);
 			J = getJ(V);
 			if J<JPre
-				alpha
+% 				alpha
 				break
 			end
 		end
 		alpha = alpha/2;
-		if alpha<1E-7
+		if alpha<1E-10
 			error("failed")
 		end
 	end
-	if alpha==0
-		disp("failed")
+	if alpha>1
+		alpha
+		disp("we are here")
 	end
 	indexList(itNum) = J;
 	normList(itNum) = norm(F);
 	FList(:,:,itNum) = F;
 	if JPre - J< 1E-7
+		itNum
 		J
 		output.F = F;
 		output.indexList = indexList(1:itNum);
