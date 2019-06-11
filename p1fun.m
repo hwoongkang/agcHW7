@@ -12,8 +12,9 @@ F = K*pinv(C);
 Ac = A-B*F*C;
 
 %% iteration settings
-indexList = zeros(1,1000);
-normList = zeros(1,1000);
+indexList = zeros(1,10000);
+normList = zeros(1,10000);
+FList = zeros(size(F,1),size(F,2),10000);
 itNum = 1;
 %% function handles
 getS = @(Ac)solveS(Ac,X);
@@ -38,7 +39,7 @@ while (true)
 	
 	JPre =J;
 	
-	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.') -FPre
+	delF = inv(R) * (B.'*V*S*C.') * inv(C*S*C.') -FPre;
 	alpha = 1;
 	while(true)
 		F = FPre + alpha*delF;
@@ -63,13 +64,14 @@ while (true)
 	end
 	indexList(itNum) = J;
 	normList(itNum) = norm(F);
+	FList(:,:,itNum) = F;
 	if JPre - J< 1E-7
-		J,F
+		J
 		output.F = F;
 		output.indexList = indexList(1:itNum);
 		output.itNum = itNum;
 		output.normList = normList(1:itNum);
-		
+		output.FList = FList(:,:,1:itNum);
 		return
 	end
 	

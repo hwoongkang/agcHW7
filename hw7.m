@@ -36,7 +36,7 @@ R=eye(2);
 ans111=p1fun(C_1,X_1);
 plotProb1(ans111);
 ans112=p1fun(C_1,X_2);
-plotProb1(ans111)
+plotProb1(ans112)
 % 
 %%
 ans121=p1fun(C_2,X_1);
