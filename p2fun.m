@@ -22,8 +22,11 @@ Ss = getS(F0,Ps);
 % delF = getDelF(Ps,Ss);
 
 J = getJ(Ps);
-
+JList = zeros(1,1000);
+it = 1;
+JList(it) = J;
 while(true)
+	it = it+1;
 	PsPre = Ps;
 	SsPre = Ss;
 	FPre = F;
@@ -52,6 +55,7 @@ while(true)
 			if J<JPre
 				alpha;
 				Ss = getS(F,Ps);
+				JList(it) =J;
 				break
 			end
 		end
@@ -64,4 +68,5 @@ while(true)
 end
 output.F = F;
 output.J=J;
+output.JList = JList(1:it);
 end

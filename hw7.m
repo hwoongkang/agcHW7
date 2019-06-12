@@ -36,3 +36,4 @@ problem1
 %% Problem 2
 problem2
 % 
+problem3
